@@ -45,6 +45,8 @@ npm test
 
 `npm test` resets the disposable test database, runs every feature and generates the HTML report. Use `npm run report` separately to regenerate HTML from an existing JSON result.
 
+Automation systems can use `npm run test:ci` to keep scenario execution and report rendering as separately observable steps.
+
 Open Cypress interactively while the application is running in another terminal:
 
 ```bash

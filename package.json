@@ -15,6 +15,8 @@
     "cy:run:auth": "cypress run --browser chrome --env tags='@auth'",
     "cy:run:booking": "cypress run --browser chrome --env tags='@booking'",
     "test:server": "cross-env NODE_ENV=test DB_PATH=.data/cypress.sqlite node src/server.js",
+    "pretest:ci": "node scripts/reset-test-db.js && node scripts/clean-reports.js",
+    "test:ci": "start-server-and-test test:server http://127.0.0.1:3000/api/health cy:run",
     "pretest": "node scripts/reset-test-db.js && node scripts/clean-reports.js",
     "test": "start-server-and-test test:server http://127.0.0.1:3000/api/health cy:run && npm run report",
     "pretest:headed": "node scripts/reset-test-db.js && node scripts/clean-reports.js",
