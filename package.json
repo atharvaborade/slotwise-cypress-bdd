@@ -1,0 +1,45 @@
+{
+  "name": "slotwise-cypress-bdd",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cypress JavaScript BDD framework for the Slotwise booking application",
+  "type": "module",
+  "engines": {
+    "node": ">=22 <25"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run --browser chrome",
+    "cy:run:headed": "cypress run --browser chrome --headed",
+    "cy:run:auth": "cypress run --browser chrome --env tags='@auth'",
+    "cy:run:booking": "cypress run --browser chrome --env tags='@booking'",
+    "test:server": "cross-env NODE_ENV=test DB_PATH=.data/cypress.sqlite node src/server.js",
+    "pretest": "node scripts/reset-test-db.js && node scripts/clean-reports.js",
+    "test": "start-server-and-test test:server http://127.0.0.1:3000/api/health cy:run && npm run report",
+    "pretest:headed": "node scripts/reset-test-db.js && node scripts/clean-reports.js",
+    "test:headed": "start-server-and-test test:server http://127.0.0.1:3000/api/health cy:run:headed && npm run report",
+    "pretest:auth": "node scripts/reset-test-db.js && node scripts/clean-reports.js",
+    "test:auth": "start-server-and-test test:server http://127.0.0.1:3000/api/health cy:run:auth && npm run report",
+    "pretest:booking": "node scripts/reset-test-db.js && node scripts/clean-reports.js",
+    "test:booking": "start-server-and-test test:server http://127.0.0.1:3000/api/health cy:run:booking && npm run report",
+    "check": "node scripts/validate-source.js",
+    "report": "node scripts/generate-report.js",
+    "clean": "node scripts/clean-reports.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "zod": "^4.1.0"
+  },
+  "devDependencies": {
+    "@badeball/cypress-cucumber-preprocessor": "^23.2.1",
+    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.7",
+    "cypress": "^15.8.1",
+    "cross-env": "^10.1.0",
+    "esbuild": "^0.27.0",
+    "multiple-cucumber-html-reporter": "^3.9.3",
+    "start-server-and-test": "^2.1.2"
+  }
+}
+

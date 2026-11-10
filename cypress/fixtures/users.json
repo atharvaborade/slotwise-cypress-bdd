@@ -1,0 +1,13 @@
+{
+  "validMember": {
+    "name": "Atharva QA",
+    "emailPrefix": "atharva.qa",
+    "password": "StrongPass123!"
+  },
+  "invalidMember": {
+    "name": "Invalid User",
+    "email": "not-an-email",
+    "password": "StrongPass123!"
+  }
+}
+

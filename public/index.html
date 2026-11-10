@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Slotwise · Appointment Lab</title><link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script></head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header><a class="brand" href="/"><span class="logo" aria-hidden="true">S</span>slotwise<span class="lab">QUALITY LAB</span></a><nav aria-label="Account"><span id="identity"></span><button id="logout" class="quiet" hidden>Sign out</button></nav></header>
+<main id="main">
+<section class="intro"><div class="eyebrow">YOUR NEXT STEP, SCHEDULED</div><h1>A little time.<br>A clearer direction.</h1><p>Book a focused conversation with a coach.<br>Build your portfolio, practise an interview, or plan what’s next.</p><div class="meta"><span>◷ 60-minute sessions</span><span>All times in UTC</span></div></section>
+<div id="notice" role="status" aria-live="polite"></div>
+<section id="auth" class="panel auth-panel" aria-labelledby="auth-title"><div><span class="eyebrow">LET’S GET STARTED</span><h2 id="auth-title">Make room for your next step.</h2><p>Create a free local account to reserve your time.</p><p class="small">Portfolio demonstration · synthetic data only</p></div><form id="auth-form"><div id="name-field"><label for="name">Your name</label><input id="name" name="name" autocomplete="name" maxlength="80" required></div><label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="email" required><label for="password">Password</label><input id="password" name="password" type="password" autocomplete="new-password" minlength="12" maxlength="128" aria-describedby="password-help" required><p id="password-help" class="small">Use 12 or more characters.</p><button type="submit" id="auth-submit">Create account</button><button type="button" id="auth-toggle" class="quiet">Already have an account? Sign in</button></form></section>
+<section id="workspace" hidden>
+<div class="section-head"><div><span class="eyebrow">FIND YOUR FOCUS</span><h2>Who would you like to meet?</h2></div><span class="pill">3 specialists · one next step</span></div>
+<div id="providers" class="providers" role="group" aria-label="Choose your coach"></div>
+<div class="booking-layout"><section class="panel" aria-labelledby="slots-title"><div class="section-head"><h2 id="slots-title">Choose a time</h2><span class="small">Next 7 days · UTC</span></div><p id="selection" class="small"></p><label for="slot">Available appointment</label><select id="slot"></select><button id="book">Confirm appointment</button><p class="small">Plans change. You can cancel from your appointment list.</p></section><section class="panel" aria-labelledby="appointments-title"><span class="eyebrow">ON YOUR CALENDAR</span><h2 id="appointments-title">Your appointments</h2><div id="appointments"></div></section></div>
+</section>
+<footer><span>Built to be tested. Designed to be understood.</span><span>Cypress BDD Quality Lab / 01</span></footer>
+</main></body></html>
