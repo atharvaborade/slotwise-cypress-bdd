@@ -8,8 +8,7 @@
     "output": "cypress/reports/cucumber-messages/messages.ndjson"
   },
   "stepDefinitions": [
-    "cypress/e2e/step_definitions/[filepath].js",
-    "cypress/e2e/step_definitions/common.js"
+    "cypress/e2e/step_definitions/**/*.js"
   ]
 }
 

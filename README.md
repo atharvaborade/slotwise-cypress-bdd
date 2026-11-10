@@ -26,7 +26,7 @@ cypress/
     └── e2e.js              global Cypress hooks and setup
 ```
 
-`cypress.config.js` connects Cypress to the Cucumber preprocessor and controls browser evidence. `.cypress-cucumber-preprocessorrc.json` produces Cucumber JSON and message reports. `scripts/generate-report.js` converts JSON into a searchable HTML dashboard.
+`cypress.config.js` connects Cypress to the Cucumber preprocessor and controls browser evidence. `.cypress-cucumber-preprocessorrc.json` loads the shared step-definition directory and produces Cucumber JSON and message reports. `scripts/generate-report.js` converts JSON into a searchable HTML dashboard.
 
 ## Local prerequisites
 
