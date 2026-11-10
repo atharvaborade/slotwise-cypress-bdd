@@ -21,15 +21,6 @@ export default defineConfig({
       on('file:preprocessor', createBundler({
         plugins: [createEsbuildPlugin(config)],
       }));
-      on('before:run', () => {
-        process.env.NODE_ENV = 'test';
-      });
-      on('task', {
-        log(message) {
-          console.log(message);
-          return null;
-        },
-      });
       return config;
     },
   },
