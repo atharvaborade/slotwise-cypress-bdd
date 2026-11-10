@@ -5,19 +5,24 @@ const unique = prefix => `${prefix}-${Date.now()}-${Cypress._.random(1e9)}@examp
 const cookie = response => String(response.headers['set-cookie'] || '').match(/session=([^;]+)/)?.[1];
 const supportedHours = [9, 10, 11, 14, 15, 16];
 let scenarioSequence = 0;
+let scenarioSlots = new Map();
 
 Before(function () {
   this.data = { accounts: {}, appointments: {} };
+  scenarioSlots = new Map();
   return cy.task('nextScenarioSequence').then(sequence => { scenarioSequence = sequence; });
 });
 
 function futureSlot(label, visible = false) {
+  if (scenarioSlots.has(label)) return scenarioSlots.get(label);
   const hash = [...label].reduce((sum, char) => sum + char.charCodeAt(0), 0);
   const date = new Date();
-  const position = scenarioSequence * 4 + hash % 4;
+  const position = scenarioSequence * supportedHours.length + scenarioSlots.size;
   date.setUTCDate(date.getUTCDate() + (visible ? 1 + hash % 7 : 8 + Math.floor(position / supportedHours.length)));
   date.setUTCHours(supportedHours[position % supportedHours.length], 0, 0, 0);
-  return date.toISOString();
+  const slot = date.toISOString();
+  scenarioSlots.set(label, slot);
+  return slot;
 }
 function registration(problem) {
   const data = { name: 'Casey Example', email: unique('member'), password };
