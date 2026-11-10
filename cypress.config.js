@@ -17,6 +17,7 @@ export default defineConfig({
     specPattern: 'cypress/e2e/features/**/*.feature',
     supportFile: 'cypress/support/e2e.js',
     async setupNodeEvents(on, config) {
+      let scenarioSequence = 0;
       await addCucumberPreprocessorPlugin(on, config);
       on('file:preprocessor', createBundler({
         plugins: [createEsbuildPlugin(config)],
@@ -36,6 +37,10 @@ export default defineConfig({
         return { status: response.status, body, headers: Object.fromEntries(response.headers) };
       };
       on('task', {
+        nextScenarioSequence() {
+          scenarioSequence += 1;
+          return scenarioSequence;
+        },
         httpRequest,
         async parallelRequests(requests) {
           return Promise.all(requests.map(httpRequest));

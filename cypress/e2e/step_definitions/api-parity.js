@@ -4,14 +4,19 @@ const password = 'Synthetic-password-2026!';
 const unique = prefix => `${prefix}-${Date.now()}-${Cypress._.random(1e9)}@example.test`;
 const cookie = response => String(response.headers['set-cookie'] || '').match(/session=([^;]+)/)?.[1];
 const supportedHours = [9, 10, 11, 14, 15, 16];
+let scenarioSequence = 0;
 
-Before(function () { this.data = { accounts: {}, appointments: {} }; });
+Before(function () {
+  this.data = { accounts: {}, appointments: {} };
+  return cy.task('nextScenarioSequence').then(sequence => { scenarioSequence = sequence; });
+});
 
 function futureSlot(label, visible = false) {
   const hash = [...label].reduce((sum, char) => sum + char.charCodeAt(0), 0);
   const date = new Date();
-  date.setUTCDate(date.getUTCDate() + (visible ? 1 + hash % 7 : 8 + hash % 70));
-  date.setUTCHours(supportedHours[hash % supportedHours.length], 0, 0, 0);
+  const position = scenarioSequence * 4 + hash % 4;
+  date.setUTCDate(date.getUTCDate() + (visible ? 1 + hash % 7 : 8 + Math.floor(position / supportedHours.length)));
+  date.setUTCHours(supportedHours[position % supportedHours.length], 0, 0, 0);
   return date.toISOString();
 }
 function registration(problem) {
