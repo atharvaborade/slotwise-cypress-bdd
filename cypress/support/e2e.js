@@ -1,4 +1,6 @@
 import './commands.js';
+import 'cypress-axe';
+import 'cypress-real-events/support';
 
 beforeEach(() => {
   cy.clearCookies();

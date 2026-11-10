@@ -1,7 +1,7 @@
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { Parser, AstBuilder, GherkinClassicTokenMatcher } from '@cucumber/gherkin';
-import { IdGenerator } from '@cucumber/messages';
+import { Parser, AstBuilder, GherkinClassicTokenMatcher, generateMessages } from '@cucumber/gherkin';
+import { IdGenerator, SourceMediaType } from '@cucumber/messages';
 
 function files(root, extension) {
   return readdirSync(root).flatMap(name => {
@@ -12,24 +12,23 @@ function files(root, extension) {
 
 const features = files('cypress/e2e/features', '.feature');
 const steps = files('cypress/e2e/step_definitions', '.js');
-if (features.length < 3 || steps.length < 4) throw new Error('Expected at least three features and four step-definition modules.');
+if (features.length !== 4 || steps.length < 2) throw new Error('Expected four parity features and at least two step-definition modules.');
 
 const parser = new Parser(new AstBuilder(IdGenerator.uuid()), new GherkinClassicTokenMatcher());
 let scenarios = 0;
 const featureSteps = [];
 for (const feature of features) {
   const document = parser.parse(readFileSync(feature, 'utf8'));
-  scenarios += document.feature.children.filter(child => child.scenario).length;
-  for (const child of document.feature.children) {
-    const node = child.scenario || child.background;
-    if (node) featureSteps.push(...node.steps.map(step => step.text));
-  }
+  const messages = generateMessages(readFileSync(feature, 'utf8'), feature, SourceMediaType.TEXT_X_CUCUMBER_GHERKIN_PLAIN, { includeSource: false, includeGherkinDocument: false, includePickles: true, newId: IdGenerator.incrementing() });
+  const pickles = messages.map(message => message.pickle).filter(Boolean);
+  scenarios += pickles.length;
+  featureSteps.push(...pickles.flatMap(pickle => pickle.steps.map(step => step.text)));
 }
-if (scenarios < 9) throw new Error(`Expected at least nine scenarios, found ${scenarios}.`);
+if (scenarios !== 93) throw new Error(`Expected Playwright parity at 93 scenarios, found ${scenarios}.`);
 
 const definitions = steps.flatMap(path => {
   const source = readFileSync(path, 'utf8');
-  return [...source.matchAll(/(?:Given|When|Then)\('([^']+)'/g)].map(match => match[1]);
+  return [...source.matchAll(/(?:Given|When|Then)\((['"])(.*?)\1/g)].map(match => match[2]);
 });
 const expression = definition => new RegExp(`^${definition
   .replace(/[.*+?^${}()|[\]\\]/g, '\\$&')

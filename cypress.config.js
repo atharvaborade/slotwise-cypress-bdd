@@ -21,6 +21,26 @@ export default defineConfig({
       on('file:preprocessor', createBundler({
         plugins: [createEsbuildPlugin(config)],
       }));
+      const httpRequest = async item => {
+        const headers = { ...(item.headers || {}) };
+        if (item.token) headers.Cookie = `session=${item.token}`;
+        if (item.body !== undefined && !headers['Content-Type']) headers['Content-Type'] = 'application/json';
+        const response = await fetch(`${config.baseUrl}${item.url}`, {
+          method: item.method,
+          headers,
+          body: item.body === undefined ? undefined : typeof item.body === 'string' ? item.body : JSON.stringify(item.body),
+        });
+        const text = await response.text();
+        let body = {};
+        if (text) { try { body = JSON.parse(text); } catch { body = text; } }
+        return { status: response.status, body, headers: Object.fromEntries(response.headers) };
+      };
+      on('task', {
+        httpRequest,
+        async parallelRequests(requests) {
+          return Promise.all(requests.map(httpRequest));
+        },
+      });
       return config;
     },
   },

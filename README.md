@@ -4,6 +4,8 @@ A JavaScript quality-engineering project that tests the Slotwise coaching-bookin
 
 This repository is the Cypress companion to the separate [Playwright Quality Lab](https://github.com/atharvaborade/playwright-quality-lab). It uses the same product domain so the two automation approaches can be compared honestly.
 
+Both repositories now share the same four Gherkin feature specifications: **93 expanded scenarios** covering API contracts, authentication, booking rules and browser journeys. Their runner code and evidence remain framework-specific.
+
 ## What it tests
 
 - New-member registration, validation, sign-in and sign-out

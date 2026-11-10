@@ -14,7 +14,7 @@
     "cy:run:headed": "cypress run --browser chrome --headed",
     "cy:run:auth": "cypress run --browser chrome --env tags='@auth'",
     "cy:run:booking": "cypress run --browser chrome --env tags='@booking'",
-    "test:server": "cross-env NODE_ENV=test DB_PATH=.data/cypress.sqlite node src/server.js",
+    "test:server": "cross-env NODE_ENV=test DB_PATH=.data/cypress.sqlite LAB_ADMIN_PASSWORD=Synthetic-admin-password-2026! node src/server.js",
     "pretest:ci": "node scripts/reset-test-db.js && node scripts/clean-reports.js",
     "test:ci": "start-server-and-test test:server http://127.0.0.1:3000/api/health cy:run",
     "pretest": "node scripts/reset-test-db.js && node scripts/clean-reports.js",
@@ -37,11 +37,12 @@
   "devDependencies": {
     "@badeball/cypress-cucumber-preprocessor": "^23.2.1",
     "@bahmutov/cypress-esbuild-preprocessor": "^2.2.7",
-    "cypress": "^15.8.1",
     "cross-env": "^10.1.0",
+    "cypress": "^15.8.1",
+    "cypress-axe": "^1.7.0",
+    "cypress-real-events": "^1.15.1",
     "esbuild": "^0.27.0",
     "multiple-cucumber-html-reporter": "^3.9.3",
     "start-server-and-test": "^2.1.2"
   }
 }
-
