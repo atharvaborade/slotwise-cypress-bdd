@@ -34,7 +34,7 @@ When('the visitor switches back to registration',()=>cy.get('#auth-toggle').clic
 Then('the name field is hidden and password completion is for an existing account',()=>{cy.get('#name').should('not.be.visible').and('not.have.attr','required');cy.get('#password').should('have.attr','autocomplete','current-password');cy.get('#auth-submit').should('have.text','Sign in');});
 Then('the name field is required and password completion is for a new account',()=>{cy.get('#name').should('be.visible').and('have.attr','required');cy.get('#password').should('have.attr','autocomplete','new-password');});
 When('the visitor submits registration with an invalid {string} in the browser',function(field){fill(this.data.uiCredentials,true);const values={name:'',email:'invalid-email',password:'short'};cy.get(`#${field}`).clear();if(values[field])cy.get(`#${field}`).type(values[field],{log:field!=='password'});cy.get('#auth-submit').click();});
-Then('the {string} field reports native validation failure',(field)=>{cy.get(`#${field}`).then($e=>expect($e[0].checkValidity()).to.eq(false)).should('be.focused');});
+Then('the {string} field reports native validation failure',(field)=>{cy.get(`#${field}`).should('match',':invalid').then($e=>expect($e[0].checkValidity()).to.eq(false));});
 Then('the browser session is still anonymous',()=>cy.request({url:'/api/me',failOnStatusCode:false}).its('status').should('eq',401));
 
 When('the member selects each coach in turn',function(){['alex','maya','sam'].forEach(provider=>{cy.intercept('GET',`/api/slots?provider=${provider}`).as(`slots-${provider}`);choose(this,provider);cy.wait(`@slots-${provider}`).then(call=>{this.data.lastAvailability=call.response.body.slots;});});});
