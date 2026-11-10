@@ -1,5 +1,6 @@
 import reporter from 'multiple-cucumber-html-reporter';
 import { existsSync, mkdirSync } from 'node:fs';
+import { release } from 'node:os';
 
 const jsonDir = 'cypress/reports/cucumber-json';
 if (!existsSync(`${jsonDir}/cucumber-report.json`)) {
@@ -13,9 +14,9 @@ reporter.generate({
   reportName: 'Slotwise Cypress Quality Report',
   displayDuration: true,
   metadata: {
-    browser: { name: 'Chrome' },
+    browser: { name: 'Chrome', version: 'managed by Cypress' },
     device: 'Local / GitHub-hosted runner',
-    platform: { name: process.platform },
+    platform: { name: process.platform, version: release() },
   },
   customData: {
     title: 'Execution information',
